@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="ug" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>بىلىگ ئەرەبچە ئۆگىنىش قىستۇرمىسى</title>
+  <style>
+    :root {
+      --bg-primary: #0b1120;
+      --bg-secondary: #111827;
+      --glass-surface: rgba(30, 41, 59, 0.72);
+      --glass-border: rgba(255, 255, 255, 0.12);
+      --glass-highlight: rgba(245, 158, 11, 0.42);
+      --text-primary: #f8fafc;
+      --text-secondary: #cbd5e1;
+      --text-muted: #94a3b8;
+      --accent-gold: #f59e0b;
+      --accent-gold-soft: rgba(245, 158, 11, 0.16);
+      --accent-emerald: #10b981;
+      --accent-emerald-soft: rgba(16, 185, 129, 0.16);
+      --accent-sky: #38bdf8;
+      --shadow-elevated: 0 12px 32px -4px rgba(0, 0, 0, 0.45);
+      --transition-smooth: all 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    body[data-theme="light"] {
+      --bg-primary: #f8fafc;
+      --bg-secondary: #e2e8f0;
+      --glass-surface: rgba(255, 255, 255, 0.86);
+      --glass-border: rgba(15, 23, 42, 0.1);
+      --glass-highlight: rgba(217, 119, 6, 0.45);
+      --text-primary: #0f172a;
+      --text-secondary: #334155;
+      --text-muted: #64748b;
+      --accent-gold: #d97706;
+      --accent-gold-soft: rgba(217, 119, 6, 0.12);
+      --accent-emerald: #059669;
+      --accent-emerald-soft: rgba(5, 150, 105, 0.12);
+      --accent-sky: #0284c7;
+      --shadow-elevated: 0 10px 25px -4px rgba(15, 23, 42, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      width: 375px;
+      min-height: 580px;
+      direction: rtl;
+      font-family: 'UKIJ Tuz', 'ALKATIP Basma', 'Uyghur Pashto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Tahoma, sans-serif;
+      background: radial-gradient(circle at top right, var(--bg-secondary), var(--bg-primary) 70%);
+      color: var(--text-primary);
+      overflow-x: hidden;
+      transition: background 0.3s ease, color 0.3s ease;
+      position: relative;
+      padding-bottom: 18px;
+    }
+
+    body.standalone-mode {
+      width: 100%;
+      max-width: 420px;
+      margin: 0 auto;
+    }
+
+    .ambient-orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(55px);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.35;
+    }
+
+    .orb-gold {
+      width: 150px;
+      height: 150px;
+      background: var(--accent-gold);
+      top: -40px;
+      right: -30px;
+    }
+
+    .orb-emerald {
+      width: 160px;
+      height: 160px;
+      background: var(--accent-emerald);
+      bottom: -50px;
+      left: -40px;
+    }
+
+    .app-shell {
+      position: relative;
+      z-index: 1;
+      padding: 14px;
+    }
+
+    .glass-header {
+      background: var(--glass-surface);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid var(--glass-border);
+      border-radius: 18px;
+      padding: 14px;
+      box-shadow: var(--shadow-elevated);
+      margin-bottom: 12px;
+      transition: var(--transition-smooth);
+    }
+
+    .header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .book-emblem {
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
+      background: linear-gradient(135deg, #f59e0b, #b45309);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.35);
+      flex-shrink: 0;
+    }
+
+    .book-emblem svg {
+      width: 22px;
+      height: 22px;
+      fill: #fef3c7;
+    }
+
+    .brand-titles h1 {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text-primary);
+      line-height: 1.3;
+    }
+
+    .brand-titles span {
+      font-size: 11.5px;
+      color: var(--accent-gold);
+      display: block;
+    }
+
+    .top-controls {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .icon-action-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--glass-border);
+      color: var(--text-primary);
+      border-radius: 9px;
+      padding: 6px 8px;
+      font-size: 12px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: var(--transition-smooth);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .icon-action-btn:hover {
+      border-color: var(--accent-gold);
+      background: var(--accent-gold-soft);
+      transform: translateY(-1px);
+    }
+
+    .icon-action-btn:active {
+      transform: scale(0.96);
+    }
+
+    .intro-paragraph {
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px solid var(--glass-border);
+      font-size: 12px;
+      line-height: 1.65;
+      color: var(--text-secondary);
+      text-align: justify;
+      text-justify: inter-word;
+      text-indent: 1.75em;
+    }
+
+    .progress-strip {
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11.5px;
+      color: var(--text-muted);
+      gap: 8px;
+    }
+
+    .progress-track {
+      flex: 1;
+      height: 6px;
+      background: rgba(148, 163, 184, 0.2);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent-emerald), var(--accent-gold));
+      border-radius: 99px;
+      transition: width 0.35s ease;
+    }
+
+    .sentences-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .phrase-card {
+      background: var(--glass-surface);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid var(--glass-border);
+      border-radius: 15px;
+      padding: 12px;
+      box-shadow: var(--shadow-elevated);
+      transition: var(--transition-smooth);
+    }
+
+    .phrase-card:hover {
+      border-color: var(--glass-highlight);
+      transform: translateY(-1.5px);
+    }
+
+    .phrase-card.mastered {
+      border-color: var(--accent-emerald);
+      background: linear-gradient(135deg, var(--accent-emerald-soft), var(--glass-surface));
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      gap: 6px;
+    }
+
+    .topic-pill {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 99px;
+      background: var(--accent-gold-soft);
+      color: var(--accent-gold);
+      border: 1px solid var(--glass-highlight);
+    }
+
+    .master-btn {
+      background: transparent;
+      border: 1px solid var(--glass-border);
+      color: var(--text-secondary);
+      border-radius: 7px;
+      padding: 3px 8px;
+      font-size: 11px;
+      font-family: inherit;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+    }
+
+    .master-btn.active {
+      background: var(--accent-emerald-soft);
+      border-color: var(--accent-emerald);
+      color: var(--accent-emerald);
+      font-weight: 700;
+    }
+
+    .arabic-line {
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--accent-gold);
+      line-height: 1.5;
+      margin-bottom: 5px;
+      font-family: 'Amiri', 'Traditional Arabic', 'Geeza Pro', Tahoma, sans-serif;
+    }
+
+    .phonetic-line {
+      font-size: 12px;
+      color: var(--accent-sky);
+      margin-bottom: 7px;
+      padding: 3px 8px;
+      background: rgba(56, 189, 248, 0.1);
+      border-right: 3px solid var(--accent-sky);
+      border-radius: 6px;
+      display: inline-block;
+    }
+
+    .uyghur-meaning {
+      font-size: 14.5px;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.55;
+      margin-bottom: 6px;
+    }
+
+    .context-paragraph {
+      font-size: 11.5px;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      text-align: justify;
+      text-justify: inter-word;
+      text-indent: 1.6em;
+      padding-top: 6px;
+      border-top: 1px dashed var(--glass-border);
+      margin-bottom: 9px;
+    }
+
+    .card-toolbar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 5px;
+    }
+
+    .tool-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--glass-border);
+      color: var(--text-primary);
+      border-radius: 8px;
+      padding: 6px 4px;
+      font-size: 11px;
+      font-family: inherit;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .tool-btn:hover {
+      background: var(--accent-gold-soft);
+      border-color: var(--accent-gold);
+      transform: translateY(-1px);
+    }
+
+    .tool-btn:active {
+      transform: scale(0.95);
+    }
+
+    .tool-btn.share-voice-btn {
+      background: var(--accent-emerald-soft);
+      border-color: rgba(16, 185, 129, 0.35);
+    }
+
+    .tool-btn.share-voice-btn:hover {
+      border-color: var(--accent-emerald);
+    }
+
+    .bottom-nav {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .nav-btn-primary {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 11px;
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #ffffff;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(245, 158, 11, 0.3);
+      transition: var(--transition-smooth);
+    }
+
+    .nav-btn-primary:hover {
+      transform: translateY(-1.5px);
+      box-shadow: 0 6px 18px rgba(245, 158, 11, 0.45);
+    }
+
+    .nav-btn-secondary {
+      padding: 10px 12px;
+      border: 1px solid var(--glass-border);
+      border-radius: 11px;
+      background: var(--glass-surface);
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+    }
+
+    .nav-btn-secondary:hover {
+      border-color: var(--accent-gold);
+    }
+
+    .privacy-footer {
+      margin-top: 12px;
+      font-size: 10.5px;
+      color: var(--text-muted);
+      text-align: justify;
+      text-justify: inter-word;
+      text-indent: 1.6em;
+      line-height: 1.6;
+      padding: 8px 10px;
+      border-radius: 10px;
+      background: rgba(15, 23, 42, 0.25);
+      border: 1px solid var(--glass-border);
+    }
+
+    .toast-banner {
+      position: fixed;
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%) translateY(90px);
+      background: #0f172a;
+      color: #f8fafc;
+      border: 1px solid var(--accent-emerald);
+      padding: 8px 14px;
+      border-radius: 99px;
+      font-size: 12px;
+      font-weight: 700;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 100;
+      white-space: nowrap;
+    }
+
+    .toast-banner.visible {
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
+</head>
+<body data-theme="dark">
+  <div class="ambient-orb orb-gold"></div>
+  <div class="ambient-orb orb-emerald"></div>
+
+  <main class="app-shell">
+    <header class="glass-header">
+      <div class="header-row">
+        <div class="brand-group">
+          <div class="book-emblem" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M21 4H3a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1zm-10 14H4V6h7v12zm9 0h-7V6h7v12z"/>
+            </svg>
+          </div>
+          <div class="brand-titles">
+            <h1>بىلىگ ئەرەبچە ئۆگىنىش</h1>
+            <span>سۈرىيە لەھجىسى ۋە ئۇيغۇرچە كۈندىلىك 5 جۈملە</span>
+          </div>
+        </div>
+        <div class="top-controls">
+          <button id="themeToggleBtn" class="icon-action-btn" title="يورۇق ياكى قاراڭغۇ ھالەتكە ئالماشتۇرۇش">🌓</button>
+          <button id="detachWindowBtn" class="icon-action-btn" title="ئالاھىدە مۇستەقىل كۆزنەكتە ئېچىش">✨ كۆزنەك</button>
+        </div>
+      </div>
+
+      <p class="intro-paragraph">
+        بۇ قىستۇرما شەرقىي تۈركىستان قېرىنداشلارنىڭ كۈندىلىك تۇرمۇش، ئىلىم-مەرىپەت ۋە سەپەردە سۈرىيە لەھجىسىدىكى ئەڭ مۇھىم ئەرەبچە جۈملىلەرنى ئۇيغۇرچە تەرجىمىسى ۋە ئاۋازلىق ھۆججىتى بىلەن ئۆگىنىشى ئۈچۈن يەرلىك ۋە بىخەتەر ھالەتتە لايىھەلەندى.
+      </p>
+
+      <div class="progress-strip">
+        <span id="lessonTitleLabel">📅 بۈگۈنكى 5 جۈملە</span>
+        <div class="progress-track">
+          <div id="progressBarFill" class="progress-bar"></div>
+        </div>
+        <span id="progressCounterText">0 / 5 يادلاندى</span>
+      </div>
+    </header>
+
+    <section id="sentencesContainer" class="sentences-stack" aria-live="polite"></section>
+
+    <div class="bottom-nav">
+      <button id="nextLessonBtn" class="nav-btn-primary">🔄 يەنە 5 يېڭى جۈملە كۆرۈش</button>
+      <button id="todayLessonBtn" class="nav-btn-secondary">📅 بۈگۈنكى دەرس</button>
+    </div>
+
+    <footer class="privacy-footer">
+      مەخپىيەتلىك كاپالىتى: بارلىق ئۆگىنىش خاتىرىلىرى پەقەت ئۆز كومپيۇتېرىڭىزدا ساقلىنىدۇ، سىرتقا ھېچقانداق سانلىق مەلۇمات يوللانمايدۇ.
+    </footer>
+  </main>
+
+  <div id="toastBanner" class="toast-banner" role="status">تەييار بولدى</div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
